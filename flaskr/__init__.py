@@ -32,6 +32,17 @@ def create_app(test_config=None)->Flask:
     from . import db
     db.init_app(app)
 
+    @app.route('/create_tables')
+    def create_tables():
+        result = None
+        database = db.get_db()
+        with app.open_resource('schema.sql') as f:
+            database.executescript(f.read().decode('utf8'))
+            result = 'Done'
+        if result is None:
+            resilt = 'Failure'
+        return result
+
     from . import auth
     app.register_blueprint(auth.bp)
 
