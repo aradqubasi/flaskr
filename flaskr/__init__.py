@@ -43,8 +43,8 @@ def create_app(test_config=None)->Flask:
             result = 'Failure'
         return result
 
-    @app.route('/get_env_var/<str:variable_name>')
-    def get_environemnt_variable(variable_name: str):
+    @app.route('/get_environment_variable/<variable_name>')
+    def get_environment_variable(variable_name: str):
         result = os.environ[variable_name]
         return result
 
