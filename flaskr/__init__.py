@@ -40,7 +40,7 @@ def create_app(test_config=None)->Flask:
             database.executescript(f.read().decode('utf8'))
             result = 'Done'
         if result is None:
-            resilt = 'Failure'
+            result = 'Failure'
         return result
 
     from . import auth
