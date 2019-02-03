@@ -43,6 +43,11 @@ def create_app(test_config=None)->Flask:
             result = 'Failure'
         return result
 
+    @app.route('/get_env_var/<str:variable_name>')
+    def get_environemnt_variable(variable_name: str):
+        result = os.environ[variable_name]
+        return result
+
     from . import auth
     app.register_blueprint(auth.bp)
 
