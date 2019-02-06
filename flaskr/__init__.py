@@ -8,7 +8,8 @@ def create_app(test_config=None)->Flask:
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqllite'),
+        CONNECTION_STRING='mongodb://py1:eI51iTn0rhfoncFM5h9inQ4WMTtwVwCOsnCT0CvYpKNBPAXF7rkqzRkM51WV7k6qiIkZEc4T35COQPODWmdIFw==@py1.documents.azure.com:10255/?ssl=true&replicaSet=globaldb',
+        DATABASE='dev'    
     )
 
     if test_config is None:

@@ -13,9 +13,7 @@ def test_register(client: FlaskClient, app):
     assert 'http://localhost/auth/login' == response.headers['Location']
 
     with app.app_context():
-        assert get_db().execute(
-            "SELECT * FROM user WHERE username = 'a'",
-        ).fetchone() is not None
+        assert get_db().select_user_by(username='a') is not None
 
 @pytest.mark.parametrize(('username', 'password', 'message'), (
     ('', '', b'Username is required.'),

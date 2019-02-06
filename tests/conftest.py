@@ -1,31 +1,30 @@
 import os
+import json
 import tempfile
 
 import pytest
 from flaskr import create_app
 from flaskr.db import get_db, init_db
 
-with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
-    _data_sql = f.read().decode('utf8')
+with open(os.path.join(os.path.dirname(__file__), 'data.json'), 'rb') as f:
+    _data_json = json.load(f)
 
 @pytest.fixture
 def app():
-    db_fd, db_path = tempfile.mkstemp()
-
     app = create_app({
         'TESTING': True,
-        'DATABASE': db_path,
+        'SECRET_KEY': 'dev',
+        'CONNECTION_STRING': 'mongodb://py1:eI51iTn0rhfoncFM5h9inQ4WMTtwVwCOsnCT0CvYpKNBPAXF7rkqzRkM51WV7k6qiIkZEc4T35COQPODWmdIFw==@py1.documents.azure.com:10255/?ssl=true&replicaSet=globaldb',
+        'DATABASE': 'dev' 
     })
 
     with app.app_context():
         init_db()
-        get_db().executescript(_data_sql)
+        db = get_db()
+        db.insert_posts(_data_json['posts'])
+        db.insert_users(_data_json['users'])
 
     yield app
-
-    os.close(db_fd)
-    os.unlink(db_path)
-
 @pytest.fixture
 def client(app):
     return app.test_client()
